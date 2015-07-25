@@ -5,16 +5,48 @@
         <title>授权管理系统-主页</title>
         <link type="text/css" rel="stylesheet" href="bootstrap-3.3.5-dist/css/bootstrap.min.css"/>
         <link type="text/css" rel="stylesheet" href="css/index.css"/>
+        <link type="text/css" rel="stylesheet" href="css/nav.css"/>
         <script type="text/javascript" src="jquery-2.1.1/jquery-2.1.1.min.js"></script>
         <script type="text/javascript" src="bootstrap-3.3.5-dist/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="js/index.js"></script>
         <meta charset="UTF-8"/>
     </head>
     <body>
-        <div id="up"><iframe id="upIframe" name="upIframe" frameborder="0"></iframe></div>
+        <div id="m">
+            <div id="title"><h1>授权管理系统</h1></div>
+            <div id="user_info"><h4 class="pull-right"><span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;欢迎，<a href="#"  data-toggle="modal" 
+   data-target="#myModal" onfocus="this.blur()">admin【admin】,个人信息</a>&nbsp;|&nbsp;<a href="#">退出</a></h4></div>
+        </div>
         <div id="bottom">
             <div id="left"><iframe id="leftIframe" name="leftIframe" frameborder="0" src="left.html"></iframe></div>
             <div id="right"><iframe id="rightIframe" name="rightIframe" frameborder="0"></iframe></div>
+        </div>
+        <!--用户信息框-->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                            &times;
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel">
+                            admin的个人信息
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table table-bordered">
+                            <tr><td class="text-right">用户名</td><td>admin</td><td class="text-right">组织机构</td><td>成都</td></tr> 
+                            <tr><td class="text-right"></td><td></td><td class="text-right"></td><td></td></tr> 
+                            <tr><td class="text-right"></td><td></td><td class="text-right"></td><td></td></tr> 
+                            <tr><td class="text-right"></td><td></td><td class="text-right"></td><td></td></tr> 
+                            <tr><td class="text-right"> </td><td colspan="3"></td></tr> 
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal -->
         </div>
     </body>
 </html>

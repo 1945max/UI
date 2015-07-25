@@ -1,0 +1,57 @@
+        #m {
+            width: 100%;
+            height: 120px;
+        }
+        body {
+            height: 120px;
+            background: #6a6a6a;
+        }
+        #title {
+            width: 50%;
+            height: 120px;
+            padding: 20px;
+            float: left;
+        }
+        h1 {
+            font-family: "微软雅黑";
+            font-weight: 800;
+            color: #313131;
+            margin: 0;
+            padding: 0;
+        }
+        #user_info {
+            width: 50%;
+            height: 120px;
+            padding: 20px;
+            float: left;
+        }
+        h4 {
+            font-family: "微软雅黑";
+            color: #313131;
+            margin: 0;
+            padding: 0;
+        }
+        a {
+            color: #313131; 
+        }
+        a:hover {
+            color: #313131;
+        }
+
+        .modal-content {
+            background: #747474;
+            font-family: "微软雅黑";
+            color: #fff;
+            border-radius: 0;
+        }
+
+        .modal-title {
+            color: #fff;
+            font-family: "微软雅黑";
+            font-weight: 800;
+        }
+        
+        td {
+            color: #fff;
+            width: 25%;
+        }
