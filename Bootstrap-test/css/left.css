@@ -1,0 +1,37 @@
+        #menu {
+            width: 200px;
+            min-height: 480px;
+        }
+        .removeRadius {
+            border-radius: 0;
+            border: 0;
+        }
+        .meun_1 {
+            background: #414141 !important;
+        }
+        .meun_1 a {
+            color: aliceblue !important;
+            font-weight: 800;
+            font-family: "微软雅黑";
+        }
+        .menu_2_m {
+            background: #6a6a6a;
+        }
+        
+        .menu_2_m a {
+            color: aliceblue !important;
+            font-family: "微软雅黑";
+        }
+                
+        .menu_2_m .panel-heading {
+            padding-top: 5 !important;
+            padding-bottom: 5 !important;
+        }
+        
+        #accordion {
+            background: #6a6a6a;
+        }
+        body {
+            overflow-y : hidden; 
+            background: #6a6a6a;
+        }
