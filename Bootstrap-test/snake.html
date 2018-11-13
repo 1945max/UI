@@ -1,0 +1,301 @@
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <title>贪吃蛇</title>
+        <script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+        <script>
+            var height=window.innerHeight;
+            var width=window.innerWidth;
+            var stageSize;
+            var boxSize;
+            var boxnum=0;
+            var player;
+            var colnum=30;
+            var snakeLong=10;
+            var boxs=new Array();
+            var status=1;
+            var timestart=1;
+            $(document).ready(function() {
+                createStage();
+                createPanel();
+            });
+            
+            $(document).keydown(function(event) {
+                player.changeMove(event.keyCode);
+            });
+            
+            //显示开始按钮
+            function creatStartButton() {
+                $('body').html('<div id="startbutton"></div>');
+            }
+            
+            //创建舞台
+            function createStage() {
+                if(height<width) {
+                    stageSize=height-60;
+                } else {
+                    stageSize=width-60;
+                }
+                $('body').html('<div id="stage"><div id="bg"></div></div>');
+                $('#stage').animate({'height':(stageSize-20)+'px','width':(stageSize-20)+'px'},500);
+                
+                $('#bg').animate({'height':(stageSize-24)+'px','width':(stageSize-24)+'px'},500);
+                boxSize=(stageSize-24)/colnum;
+                setTimeout('addBox()',500);
+            }
+            //创建背景
+            function addBox() {
+                $('#bg').append('<div id="box_'+boxnum+'" class="box"></div>');
+                $('#box_'+boxnum).animate({'height':boxSize-4,'width':boxSize-4},5);
+                boxnum++;
+                if(boxnum<colnum*colnum) {
+                    setTimeout('addBox()',5);
+                } else {
+                    createdBg();
+                }
+            }
+            //创建玩家
+            function createdBg() {
+                player=new Player();
+                player.createPlayer();
+                createbox();
+                setTimeout('startMove()',1000);
+                showtime();
+            }
+            
+            function startMove() {
+                player.move();
+                if(status==1) {
+                   setTimeout('startMove()',100); 
+                }
+            }
+            //创建道具
+            function createbox() {
+                if(status==1) {
+                    var newbox=Math.floor(Math.random()*colnum*colnum);
+                    if(player.playerArray.indexOf(newbox)!=-1||boxs.indexOf(newbox)!=-1) {
+                        createbox();
+                    } else {
+                        boxs[boxs.length]=newbox;
+                        $('#box_'+newbox).css('background','#6f6f6f');
+                        setTimeout('createbox()',5000);
+                    }
+                }
+            }
+            
+            function Player() {
+                this.to=4;
+                this.addflag=0;
+                this.playerArray=new Array();
+                this.createPlayer=function() {
+                    var long=0;
+                    for(var i=snakeLong-1;i>=0;i--) {
+                        $('#box_'+(i*colnum)).css('background','#6f6f6f');
+                        this.playerArray[long]=i*colnum;
+                        long++;
+                    }
+                }
+                //移动
+                this.move=function() {
+                    this.validdead();
+                    switch(this.to) {
+                        case 1:this.toUp();break;//up
+                        case 2:this.toDown();break;//down
+                        case 3:this.toLeft();break;//left
+                        case 4:this.toRight();break;//right
+                    }
+                }
+                //相左
+                this.toLeft=function() {
+                    if(this.playerArray[0]%colnum!=0) {
+                        $('#box_'+this.playerArray[this.playerArray.length-1]).css('background','#fff');
+                        for(var i=this.playerArray.length-1;i>0;i--) {
+                            this.playerArray[i]=this.playerArray[i-1];
+                        }
+                        this.playerArray[0]-=1;
+                        $('#box_'+this.playerArray[0]).css('background','#6f6f6f');
+                        this.getbox();
+                    } else {
+                        dead();
+                    }
+                }
+                //向右
+                this.toRight=function() {
+                    if(this.playerArray[0]%colnum!=colnum-1) {
+                        $('#box_'+this.playerArray[this.playerArray.length-1]).css('background','#fff');
+                        for(var i=this.playerArray.length-1;i>0;i--) {
+                            this.playerArray[i]=this.playerArray[i-1];
+                        }
+                        this.playerArray[0]+=1;
+                        $('#box_'+this.playerArray[0]).css('background','#6f6f6f');
+                        this.getbox();
+                    } else {
+                        dead();
+                    }
+                }
+                //向上
+                this.toUp=function() {
+                    if(this.playerArray[0]>colnum-1) {
+                        $('#box_'+this.playerArray[this.playerArray.length-1]).css('background','#fff');
+                        for(var i=this.playerArray.length-1;i>0;i--) {
+                            this.playerArray[i]=this.playerArray[i-1];
+                        }
+                        this.playerArray[0]-=colnum;
+                        $('#box_'+this.playerArray[0]).css('background','#6f6f6f');
+                        this.getbox();
+                    } else {
+                        dead();
+                    }
+                }
+                //向下
+                this.toDown=function() {
+                    if(this.playerArray[0]<colnum*(colnum-1)) {
+                        $('#box_'+this.playerArray[this.playerArray.length-1]).css('background','#fff');
+                        for(var i=this.playerArray.length-1;i>0;i--) {
+                            this.playerArray[i]=this.playerArray[i-1];
+                        }
+                        this.playerArray[0]+=colnum;
+                        $('#box_'+this.playerArray[0]).css('background','#6f6f6f');
+                        this.getbox();
+                    } else {
+                        dead();
+                    }
+                }
+                this.changeMove=function(to) {
+                    if(!((to==38&&this.to==2)||(to==40&&this.to==1)||(to==37&&this.to==4)||(to==39&&this.to==3))) {
+                        switch(to) {
+                            case 38:this.to=1;break;//up
+                            case 40:this.to=2;break;//down
+                            case 37:this.to=3;break;//left
+                            case 39:t:this.to=4;break;//right
+                        }
+                    }
+                }
+                this.validdead=function() {
+                    switch(this.to) {
+                        case 1:if(this.playerArray.indexOf(this.playerArray[0]-colnum)!=-1){dead();};if(boxs.indexOf(this.playerArray[0]-colnum)!=-1) {
+                            this.addflag=1;
+                            boxs.splice($.inArray(this.playerArray[0]-colnum,boxs),1);
+                        };break;//up
+                        case 2:if(this.playerArray.indexOf(this.playerArray[0]+colnum)!=-1){dead();};if(boxs.indexOf(this.playerArray[0]+colnum)!=-1) {
+                            this.addflag=1;
+                            boxs.splice($.inArray(this.playerArray[0]+colnum,boxs),1);
+                        };break;//down
+                        case 3:if(this.playerArray.indexOf(this.playerArray[0]-1)!=-1){dead();};if(boxs.indexOf(this.playerArray[0]-1)!=-1) {
+                            this.addflag=1;
+                            boxs.splice($.inArray(this.playerArray[0]-1,boxs),1);
+                        };break;//left
+                        case 4:if(this.playerArray.indexOf(this.playerArray[0]+1)!=-1){dead();};if(boxs.indexOf(this.playerArray[0]+1)!=-1) {
+                            this.addflag=1;
+                            boxs.splice($.inArray(this.playerArray[0]+1,boxs),1);
+                        };break;//right     
+                    }
+                }
+                //获得道具
+                this.getbox=function() {
+                    if(this.addflag==1){
+                        this.playerArray[this.playerArray.length]=this.playerArray[this.playerArray.length];
+                        $('box_'+this.playerArray[this.playerArray.length]).css('background','#6f6f6f');
+                        this.addflag=0;
+                        $('#num').text(parseInt($('#num').text())+1);
+                    }
+                }
+            }
+            //结束页面显示
+            function dead() {
+                status=0;
+                timestart=0;
+                var num=$('#num').text();
+                var time=$('#time').text();
+                $('body').children().remove(); 
+                $('body').html('<div id="startbutton"></div>');
+                $('#startbutton').animate({'min-height':'100px','width':'200px'},1000);
+                $('#startbutton').html('<table><tr><td colspan="2">∑(っ °Д °;)っ你输了！</td></tr><tr><td align="right">得分：</td><td>'+num+'</td></tr><tr><td align="right">时间：</td><td>'+time+'</td></tr><tr><td><a href="#">上传记录</a></td><td><a href="javascript:restart();">重新开始</a></td></tr></table>');
+            }
+            
+            //创建分数与时间面板
+            function createPanel() {
+                var space=(width-stageSize-20)/2;
+                $('body').append('<div id="numpanel"></div>');
+                $('#numpanel').animate({'width':(space-100)+'px','height':'auto'},1000);
+                $('#numpanel').html('<table><tr><td>得分：</td><td id="num">0</td></tr><tr><td>时间：</td><td id="time">0</td></tr></table>');
+            }
+            //计算时间
+            function showtime() {
+                $('#time').text(parseInt($('#time').text())+1);
+                if(timestart==1) {
+                    setTimeout('showtime()',1000);
+                }
+            }
+            //重新开始
+            function restart() {
+                $('body').children().remove();
+                status=1;
+                boxnum=0;
+                player=null;
+                timestart=1;
+                boxs=new Array();
+                createStage();
+                createPanel();
+            }
+        </script>
+        <style>
+            body {
+                background: #4b4b4b;
+                padding: 0;
+                margin: 0;
+            }
+            #stage {
+                height: 0;
+                width: 0;
+                margin:auto;
+                margin-top: 30px;
+                border: 10px solid #fff;
+                box-shadow: 10px 10px 5px 5px #000000;
+            }
+            #bg {
+                height: 0;
+                width: 0;
+                background: #0080ff;
+                padding: 2px;
+            }
+            .box {
+                float: left;
+                background: #fff;
+                border: 2px solid #0080ff;
+            }
+            #startbutton {
+                height: auto;
+                width: 0;
+                background: #fff;
+                box-shadow: 10px 10px 5px 5px #000000;
+                font-size: 0;
+                text-align: center;
+                line-height: 100px;
+                margin: auto;
+                margin-top: 100px;
+            }
+            
+            #startbutton table {
+                font-size: 18px;
+                font-family: '微软雅黑';
+                color: #0080ff;
+            }
+            #numpanel {
+                background: #fff;
+                position: absolute;
+                z-index: 1000;
+                top: 30px;
+                left: 50px;
+            }
+            #numpanel table {
+                font-size: 48px;
+                font-family: '微软雅黑';
+                color: #0080ff;
+                padding: 10px;
+            }
+        </style>
+    </head>
+    <body>
+    </body>
+</html>
